@@ -44,7 +44,6 @@ func (client *GithubClient) SearchGitHub(query string) (*SearchResult, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(client.token)
 
 	req.Header.Set("Accept", "application/vnd.github+json")
 

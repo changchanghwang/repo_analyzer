@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github Repository Search</title>
+    <script src="wasm_exec.js"></script>
+    <script>
+        const go = new Go();
+        WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
+            .then((result) => {
+                console.log("WASM loaded successfully");
+                go.run(result.instance);
+            })
+            .catch((err) => {
+                console.error("Failed to load WASM:", err);
+                document.getElementById("results").innerHTML = "Failed to load WASM: " + err.message;
+            });
+
+        function searchInput() {
+            if (typeof search === "function") {
+                search();
+            } else {
+                document.getElementById("results").innerHTML = "Error: search function is not defined";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Github Repository Search</h1>
+    <div style="margin-bottom:16px;">
+        <input id="search-input" type="text" placeholder="Enter search query">
+        <button onclick="searchInput()">Search</button>
+    </div>
+    <div id="results"></div>
+</body>
+</html>

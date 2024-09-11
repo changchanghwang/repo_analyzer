@@ -30,6 +30,11 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	config.Init()
 
-	http.HandleFunc("/search", searchHandler)
+	// 현재 디렉토리에서 파일 서빙
+	fs := http.FileServer(http.Dir("./wasm"))
+	http.HandleFunc("/api/search", searchHandler)
+
+	// "/static/" 경로로 접근했을 때 파일 제공
+	http.Handle("/", fs)
 	log.Fatal(http.ListenAndServe(":3334", nil))
 }
