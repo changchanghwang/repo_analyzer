@@ -11,11 +11,33 @@
             .then((result) => {
                 console.log("WASM loaded successfully");
                 go.run(result.instance);
+                console.log("WASM run completed");
+                console.log("renderHome function exists:", typeof renderHome === "function");
+                renderPage();
             })
             .catch((err) => {
                 console.error("Failed to load WASM:", err);
-                document.getElementById("results").innerHTML = "Failed to load WASM: " + err.message;
+                document.getElementById("content").innerHTML = "Failed to load WASM: " + err.message;
             });
+
+        function renderPage() {
+            console.log("renderPage called");
+            const path = window.location.pathname;
+            switch (path){
+                case "/":
+                case "/index.html":
+                    if (typeof renderHome === "function") {
+                        console.log("Calling renderHome");
+                        renderHome();
+                    } else {
+                        console.error("renderHome function is not defined");
+                        document.getElementById("content").innerHTML = "Error: renderHome function is not defined";
+                    }
+                    break;
+                default:
+                    document.getElementById("content").innerHTML = "<h1>404 - Page Not Found</h1>";
+            }
+        }
 
         function searchInput() {
             if (typeof search === "function") {
@@ -24,14 +46,11 @@
                 document.getElementById("results").innerHTML = "Error: search function is not defined";
             }
         }
+
+        window.onpopstate = renderPage;
     </script>
 </head>
 <body>
-    <h1>Github Repository Search</h1>
-    <div style="margin-bottom:16px;">
-        <input id="search-input" type="text" placeholder="Enter search query">
-        <button onclick="searchInput()">Search</button>
-    </div>
-    <div id="results"></div>
+    <div id="content"></div>
 </body>
 </html>

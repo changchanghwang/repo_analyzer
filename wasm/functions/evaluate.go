@@ -2,6 +2,9 @@
 
 package functions
 
+import "syscall/js"
+
 func evaluate(repoName string) {
-	ConsoleLog("Showing details for:", repoName)
+	window := js.Global().Get("window")
+	window.Get("location").Set("href", "/evaluate?repoName="+repoName)
 }
