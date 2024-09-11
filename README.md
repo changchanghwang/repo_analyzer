@@ -1,3 +1,3 @@
 # repo_analyzer
 
-<img width="1789" alt="image" src="https://github.com/user-attachments/assets/dfdce6e5-2438-4aff-a0c2-b2a7a0845fdc">
+<img width="1800" alt="image" src="https://github.com/user-attachments/assets/c64a62f9-f6a5-41a6-8c48-afd902086625">
