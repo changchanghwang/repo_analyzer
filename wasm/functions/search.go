@@ -116,7 +116,7 @@ func displayResults(document js.Value, result *searchResult) {
 		button := document.Call("createElement", "button")
 		button.Set("innerHTML", "Analyze")
 		button.Call("addEventListener", "click", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-			evaluate(item.FullName)
+			NavigateTo("/evaluate?repoName=" + item.FullName)
 			return nil
 		}))
 		buttonCell.Call("appendChild", button)

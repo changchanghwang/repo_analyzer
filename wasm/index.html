@@ -6,6 +6,11 @@
     <title>Github Repository Search</title>
     <script src="wasm_exec.js"></script>
     <script>
+        function navigateTo(url) {
+            history.pushState(null, '', url);
+            renderPage();
+        }
+
         const go = new Go();
         WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
             .then((result) => {
@@ -23,15 +28,23 @@
         function renderPage() {
             console.log("renderPage called");
             const path = window.location.pathname;
-            switch (path){
+            console.log("Current path:", path);
+            switch (path) {
                 case "/":
                 case "/index.html":
                     if (typeof renderHome === "function") {
-                        console.log("Calling renderHome");
                         renderHome();
                     } else {
                         console.error("renderHome function is not defined");
                         document.getElementById("content").innerHTML = "Error: renderHome function is not defined";
+                    }
+                    break;
+                case "/evaluate":
+                    if (typeof renderEvaluate === "function") {
+                        renderEvaluate();
+                    } else {
+                        console.error("renderEvaluate function is not defined");
+                        document.getElementById("content").innerHTML = "Error: renderEvaluate function is not defined";
                     }
                     break;
                 default:
@@ -47,7 +60,20 @@
             }
         }
 
+        // 페이지 내 링크 클릭 처리
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.href.startsWith(window.location.origin)) {
+                e.preventDefault();
+                history.pushState(null, '', e.target.href);
+                renderPage();
+            }
+        });
+
+        // 브라우저 뒤로가기/앞으로가기 처리
         window.onpopstate = renderPage;
+
+        // 초기 페이지 로드 시 renderPage 실행
+        window.addEventListener('load', renderPage);
     </script>
 </head>
 <body>

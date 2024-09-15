@@ -14,6 +14,7 @@ func main() {
 	functions.ConsoleLog("WASM main function started")
 	done = make(chan struct{})
 	js.Global().Set("renderHome", js.FuncOf(render.RenderHome))
+	js.Global().Set("renderEvaluate", js.FuncOf(render.RenderEvaluate))
 	js.Global().Set("search", js.FuncOf(functions.Search))
 	<-done
 }
